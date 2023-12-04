@@ -20,7 +20,9 @@ export default defineComponent({
           right: "dayGridMonth,timeGridWeek,timeGridDay",
         },
         initialView: "dayGridMonth",
-        initialEvents: INITIAL_EVENTS,
+        initialEvents: INITIAL_EVENTS.filter(
+          (e) => e.userId === localStorage.getItem("role")
+        ),
         editable: true,
         selectable: true,
         selectMirror: true,
@@ -40,6 +42,7 @@ export default defineComponent({
   },
   methods: {
     handleDateSelect(selectInfo) {
+      console.log(localStorage.getItem("role"));
       let title = prompt("Please enter a new title for your event");
       let calendarApi = selectInfo.view.calendar;
 
