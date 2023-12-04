@@ -44,6 +44,7 @@
 
 <script>
 import Validation from "./../assets/validation.js";
+import { createUser } from "../assets/users";
 
 export default {
   name: "RegistrationPage",
@@ -81,28 +82,8 @@ export default {
       this.checkPasswordMatch = true;
 
       if (this.isEmailValid) {
-        const url = new URL(`${window.location.origin}/api/user/registration`);
-        const body = {
-          email: this.email,
-          password: this.password,
-        };
-        console.log(body);
-        fetch(url, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(body),
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            this.$router.push("/login");
-            console.log(data);
-          })
-          .catch((error) => {
-            this.error = error.message;
-            console.log(error.message);
-          });
+        createUser(this.email, this.password);
+        this.$router.push("/login");
       }
     },
     handleFocusoutPassword2() {

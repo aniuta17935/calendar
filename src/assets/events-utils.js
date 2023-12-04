@@ -1,12 +1,13 @@
 import { INITIAL_EVENTS, createEventId } from "./events";
 
 
-export function createEvent(title, start, end, startTime, endTime) {
+export function createEvent(title, start, end, startTime, endTime, userId) {
     const newEvent = {
         id: createEventId(),
         title: title,
         start: start + startTime,
-        end: end + endTime
+        end: end + endTime,
+        userId: userId.toString()
     }
     INITIAL_EVENTS.push(newEvent);
 }

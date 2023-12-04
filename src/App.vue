@@ -1,15 +1,13 @@
 <template>
   <div id="app">
     <header>
-      <router-link to="/">
-        <figure>
-          <img class="logo" src="./assets/images/logo.png" />
-        </figure>
-      </router-link>
+      <figure>
+        <img class="logo" src="./assets/images/logo.png" />
+      </figure>
       <router-link to="/login" v-if="role === 'viewer'">
         <h3 class="last">Enter</h3>
       </router-link>
-      <router-link to="/" v-if="role !== 'viewer'">
+      <router-link to="/login" v-if="role !== 'viewer'">
         <h3 class="last" v-on:click="handleLogout">Exit</h3>
       </router-link>
     </header>
@@ -24,38 +22,24 @@ export default {
   name: "App",
   data() {
     return {
-      role: localStorage.getItem("token")
-        ? localStorage.getItem("role")
-        : "viewer",
+      role: localStorage.getItem("role"),
     };
   },
   watch: {
     $route() {
-      console.log("Component updated");
-      console.log(localStorage.getItem("token"));
-      this.role = localStorage.getItem("token")
-        ? localStorage.getItem("role")
-        : "viewer";
-      console.log(localStorage.getItem("role"));
+      this.role = localStorage.getItem("role");
     },
   },
   mounted() {
-    console.log("mounted");
-    console.log(localStorage.getItem("token"));
     document.title = "Calendar";
-    this.role = localStorage.getItem("token")
-      ? localStorage.getItem("role")
-      : "viewer";
-    if (!localStorage.getItem("token")) {
-      this.role = "viewer";
-    }
-    console.log(localStorage.getItem("role"));
+    this.role = localStorage.getItem("role");
   },
   methods: {
     handleLogout() {
       localStorage.clear();
+      localStorage.setItem("role", "viewer");
+      this.$router.push("/login");
       this.role = "viewer";
-      this.$router.push("/search");
     },
   },
 };
