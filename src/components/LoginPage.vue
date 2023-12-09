@@ -17,6 +17,8 @@
 </template>
 
 <script>
+import { INITIAL_USERS } from "../assets/users";
+
 export default {
   name: "loginPage",
   data() {
@@ -30,32 +32,15 @@ export default {
     handleSubmitForm(e) {
       e.preventDefault();
       if (this.email && this.password) {
-        const url = new URL(`${window.location.origin}/api/auth/login`);
-        const body = {
-          email: this.email,
-          password: this.password,
-        };
-        fetch(url, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body),
-        })
-          .then((response) => {
-            if (response.status === 200) {
-              return response.json();
-            } else {
-              throw new Error("Введено неправильний логін або пароль.");
-            }
-          })
-          .then((data) => {
-            console.log(data);
-            localStorage.setItem("token", data.result.token);
-            localStorage.setItem("role", data.result.role);
-            this.$router.push({ path: "/search" });
-          })
-          .catch((error) => {
-            this.error = error.message;
-          });
+        const user = INITIAL_USERS.find(
+          (u) => u.email === this.email && u.password === this.password
+        );
+        if (!user) {
+          this.error = "Введено неправильний логін або пароль.";
+        } else {
+          localStorage.setItem("role", user.id);
+          this.$router.push({ path: "/" });
+        }
       }
     },
     handleLinkClick() {
