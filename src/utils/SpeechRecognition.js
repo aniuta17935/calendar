@@ -20,14 +20,10 @@ export class SpeechRecognition {
       prompt: "кінець нотатки",
       response: "Нотатку створено",
     },
+    // 20 грудня видали нотатку
     {
-      description: "delete calendar note",
+      description: "delete note",
       prompt: "видали нотатку",
-      response: "Нотатку видалено",
-    },
-    {
-      description: "confirm delete",
-      prompt: "qweqweqw",
       response: "Нотатку видалено",
     },
   ];
@@ -104,6 +100,7 @@ export class SpeechRecognition {
 
               console.log(date, content);
               this.calendarApi.addEvent({
+                id: date,
                 title: content,
                 date: date,
                 allDay: true,
@@ -112,9 +109,13 @@ export class SpeechRecognition {
               this.lastDate = "";
               break;
             }
-
-            default:
+            case "delete note": {
+              const date = getFormattedDate(
+                command.split(" ").slice(0, 2).join(" ")
+              );
+              this.calendarApi.getEventById(date).remove();
               break;
+            }
           }
           response = { ...action };
           return;
