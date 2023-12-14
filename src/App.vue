@@ -2,13 +2,23 @@
   <div id="app">
     <header>
       <figure>
-        <img class="logo" src="./assets/images/logo.png" />
+        <img
+          class="logo"
+          src="./assets/images/logo.png" />
       </figure>
-      <router-link to="/login" v-if="role === 'viewer'">
+      <router-link
+        to="/login"
+        v-if="role === 'viewer'">
         <h3 class="last">Enter</h3>
       </router-link>
-      <router-link to="/login" v-if="role !== 'viewer'">
-        <h3 class="last" v-on:click="handleLogout">Exit</h3>
+      <router-link
+        to="/login"
+        v-if="role !== 'viewer'">
+        <h3
+          class="last"
+          v-on:click="handleLogout">
+          Exit
+        </h3>
       </router-link>
     </header>
     <div class="content">
