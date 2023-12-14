@@ -5,6 +5,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { INITIAL_EVENTS, createEventId } from "../assets/events";
+import { SpeechRecognition } from "@/utils/SpeechRecognition";
 
 export default defineComponent({
   components: {
@@ -38,9 +39,20 @@ export default defineComponent({
         */
       },
       currentEvents: [],
+      speechRecognition: new SpeechRecognition(),
     };
   },
   methods: {
+    testButtonClicked() {
+      if (!this.speechRecognition.calendarApi)
+        this.speechRecognition.provideCalendar(
+          this.$refs.fullCalendar.getApi()
+        );
+
+      if (this.speechRecognition.isListening) {
+        this.speechRecognition.stopListening();
+      } else this.speechRecognition.startListening();
+    },
     handleDateSelect(selectInfo) {
       console.log(localStorage.getItem("role"));
       let title = prompt("Please enter a new title for your event");
@@ -80,7 +92,9 @@ export default defineComponent({
       <div class="demo-app-sidebar-section">
         <h2>All Events ({{ currentEvents.length }})</h2>
         <ul>
-          <li v-for="event in currentEvents" :key="event.id">
+          <li
+            v-for="event in currentEvents"
+            :key="event.id">
             <b>{{ event.startStr.slice(0, 10) }}</b>
             <i>{{ event.title }}</i>
           </li>
@@ -88,17 +102,28 @@ export default defineComponent({
       </div>
     </div>
     <div class="demo-app-main">
-      <FullCalendar class="demo-app-calendar" :options="calendarOptions">
+      <FullCalendar
+        ref="fullCalendar"
+        class="demo-app-calendar"
+        :options="calendarOptions">
         <template v-slot:eventContent="arg">
           <b>{{ arg.timeText }}</b>
           <i>{{ arg.event.title }}</i>
         </template>
       </FullCalendar>
     </div>
+    <div class="speech-area">
+      <button
+        class="speech-btn"
+        @click="testButtonClicked">
+        {{ speechRecognition.isListening ? "Stop" : "Start" }} listening
+      </button>
+      <div class="speech-result">{{ speechRecognition.result }}</div>
+    </div>
   </div>
 </template>
 
-<style lang='css'>
+<style lang="css">
 h2 {
   margin: 0;
   font-size: 16px;
@@ -142,5 +167,23 @@ b {
 .fc {
   max-width: 1100px;
   margin: 0 auto;
+}
+
+.speech-area {
+  display: flex;
+  flex-direction: row;
+  position: fixed;
+  bottom: 16px;
+  left: 16px;
+}
+
+.speech-btn {
+  padding: 8px;
+}
+
+.speech-result {
+  display: flex;
+  align-self: center;
+  padding-left: 16px;
 }
 </style>
