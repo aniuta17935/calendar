@@ -55,6 +55,10 @@ export class SpeechRecognition {
           setTimeout(
             function () {
               this.stopListening();
+
+              // SET SPEECH ANIMATION HERE
+              // WITH TIMEOUT SET IDLE ANIMATION
+
               this.result.value = response.response;
             }.bind(ctx),
             1500
@@ -68,12 +72,16 @@ export class SpeechRecognition {
   }
 
   startListening() {
+    // SET LISTENING ANIMATION HERE
+
     this.result = "";
     this.start();
     console.log("Start listening");
   }
 
   stopListening() {
+    // SET IDLE ANIMATION HERE
+
     this.stop();
     console.log("Stop listening");
   }
