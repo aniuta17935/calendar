@@ -100,6 +100,7 @@ export default defineComponent({
           </li>
         </ul>
       </div>
+      <img :src="speechRecognition.currentImage" class="cat-model" />
     </div>
     <div class="demo-app-main">
       <FullCalendar
@@ -175,6 +176,12 @@ b {
   position: fixed;
   bottom: 16px;
   left: 16px;
+}
+
+.cat-model {
+  width: 300px;
+  height: 300px;
+  object-fit: cover;
 }
 
 .speech-btn {

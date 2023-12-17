@@ -49,6 +49,15 @@ export class SpeechRecognition {
 
     this.lastDate = "";
 
+    this.catModel = require('@/assets/images/cat-model.jpg');
+    this.catModelListening = require('@/assets/images/cat-model-listening.jpg');
+    this.animationListeningStart = require('@/assets/images/animation-listening-start.gif');
+    this.animationListeningEnd = require('@/assets/images/animation-listening-end.gif');
+    this.animationSpeaking = require('@/assets/images/animation-speaking.gif');
+    this.animationYes = require('@/assets/images/animation-yes.gif');
+    this.animationNo = require('@/assets/images/animation-no.gif');
+    this.currentImage = require('@/assets/images/cat-model.jpg');
+
     const ctx = this;
 
     watch(
@@ -61,12 +70,16 @@ export class SpeechRecognition {
             function () {
               this.stopListening();
 
-              // SET SPEECH ANIMATION HERE
-              // WITH TIMEOUT SET IDLE ANIMATION
+              this.currentImage = this.animationSpeaking;
 
               this.result.value = response.response;
 
               this.speechSynth.speak();
+
+              // need to stop spealing animation
+              // setTimeout(() => {
+              //   this.currentImage = this.catModel;
+              // }, 5000);
             }.bind(ctx),
             1500
           );
@@ -79,7 +92,7 @@ export class SpeechRecognition {
   }
 
   startListening() {
-    // SET LISTENING ANIMATION HERE
+    this.currentImage = this.animationListeningStart;
 
     this.result = "";
     this.start();
@@ -87,7 +100,7 @@ export class SpeechRecognition {
   }
 
   stopListening() {
-    // SET IDLE ANIMATION HERE
+    this.currentImage = this.animationListeningEnd;
 
     this.stop();
     console.log("Stop listening");
