@@ -26,6 +26,10 @@ export class SpeechRecognition {
       prompt: "видали нотатку",
       response: "Нотатку видалено",
     },
+    {
+      description: "error",
+      response: "Вибачте, команду не розпізнано",
+    },
   ];
 
   constructor() {
@@ -44,7 +48,7 @@ export class SpeechRecognition {
 
     this.speechSynth = useSpeechSynthesis(this.result, {
       lang: "uk",
-      pitch: 0.3,
+      pitch: 0.4,
     });
 
     this.lastDate = "";
@@ -59,6 +63,7 @@ export class SpeechRecognition {
         if (Object.keys(response).length !== 0 && this.isListening)
           setTimeout(
             function () {
+              this.commandResolved = true;
               this.stopListening();
 
               // SET SPEECH ANIMATION HERE
@@ -81,6 +86,7 @@ export class SpeechRecognition {
   startListening() {
     // SET LISTENING ANIMATION HERE
 
+    this.commandResolved = false;
     this.result = "";
     this.start();
     console.log("Start listening");
@@ -91,6 +97,10 @@ export class SpeechRecognition {
 
     this.stop();
     console.log("Stop listening");
+    if (!this.commandResolved) {
+      this.result = "Вибачте, команду не розпізнано";
+      this.speechSynth.speak();
+    }
   }
 
   resolveCommand(command) {
