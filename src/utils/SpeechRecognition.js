@@ -1,4 +1,4 @@
-import { useSpeechRecognition } from "@vueuse/core";
+import { useSpeechRecognition, useSpeechSynthesis } from "@vueuse/core";
 import { watch } from "vue";
 
 export class SpeechRecognition {
@@ -42,6 +42,11 @@ export class SpeechRecognition {
     this.stop = stop;
     this.result = result;
 
+    this.speechSynth = useSpeechSynthesis(this.result, {
+      lang: "uk",
+      pitch: 0.3,
+    });
+
     this.lastDate = "";
 
     const ctx = this;
@@ -60,6 +65,8 @@ export class SpeechRecognition {
               // WITH TIMEOUT SET IDLE ANIMATION
 
               this.result.value = response.response;
+
+              this.speechSynth.speak();
             }.bind(ctx),
             1500
           );
